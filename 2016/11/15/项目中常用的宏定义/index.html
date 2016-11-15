@@ -6,14 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://zhaojianjun.me">
-  <title>JianJun Zhao&#39;s Blog</title>
+  <title>项目中常用的宏定义 | JianJun Zhao&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="JianJun Zhao's Blog">
-<meta property="og:url" content="http://zhaojianjun.me/index.html">
+  <meta name="description" content="1.获取屏幕宽度与宽度
+ #define SCREEN_WIDTH   [UIScreen mainScreen].bounds.size.width
+ #define SCREENH_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+2.获取通知中心
+ #define LRNotificationCenter [NSNotificationCent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目中常用的宏定义">
+<meta property="og:url" content="http://zhaojianjun.me/2016/11/15/项目中常用的宏定义/index.html">
 <meta property="og:site_name" content="JianJun Zhao's Blog">
+<meta property="og:description" content="1.获取屏幕宽度与宽度
+ #define SCREEN_WIDTH   [UIScreen mainScreen].bounds.size.width
+ #define SCREENH_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+2.获取通知中心
+ #define LRNotificationCenter [NSNotificationCent">
+<meta property="og:updated_time" content="2016-11-15T06:58:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JianJun Zhao's Blog">
+<meta name="twitter:title" content="项目中常用的宏定义">
+<meta name="twitter:description" content="1.获取屏幕宽度与宽度
+ #define SCREEN_WIDTH   [UIScreen mainScreen].bounds.size.width
+ #define SCREENH_HEIGHT [UIScreen mainScreen].bounds.size.height
+
+2.获取通知中心
+ #define LRNotificationCenter [NSNotificationCent">
   
     <link rel="alternative" href="/atom.xml" title="JianJun Zhao&#39;s Blog" type="application/atom+xml">
   
@@ -121,9 +140,7 @@
 </nav>
 
       <div class="body-wrap">
-        
-  
-    <article id="post-项目中常用的宏定义" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-项目中常用的宏定义" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -132,8 +149,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/15/项目中常用的宏定义/">项目中常用的宏定义</a>
+    <h1 class="article-title" itemprop="name">
+      项目中常用的宏定义
     </h1>
   
 
@@ -207,162 +224,44 @@
   </div>
 </article>
 
-
-
-
-
-
-
-
-
-
   
-    <article id="post-Objective-C消息转发" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/15/Objective-C消息转发/">Objective-C消息转发</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、消息转发机制"><a href="#一、消息转发机制" class="headerlink" title="一、消息转发机制"></a>一、消息转发机制</h3><p>当向某个对象发送一条消息时，如果该对象的方法列表以及它相应的继承链上的方法列表中都无法找到该消息的方法实现时，则会出发消息转发机制。</p>
-<p>执行消息转发机制相当于在该对象无法找到消息实现时的一种补救方式，也可以理解为防止程序crash的备选方案，系统为此提供了三种方案：</p>
-<h5 id="方案一："><a href="#方案一：" class="headerlink" title="方案一："></a>方案一：</h5><blockquote>
-<p>+(BOOL)resolveInstanceMethod:(SEL)sel</p>
-</blockquote>
-<h5 id="方案二："><a href="#方案二：" class="headerlink" title="方案二："></a>方案二：</h5><blockquote>
-<p>-(id)forwardingTargetForSelector:(SEL)aSelector</p>
-</blockquote>
-<h5 id="方案三："><a href="#方案三：" class="headerlink" title="方案三："></a>方案三：</h5><blockquote>
-<p>-(NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;</p>
-<p>-(void)forwardInvocation:(NSInvocation *)anInvocation;</p>
-</blockquote>
-<p>三种方法的顺序执行，举例：如果方案一实现了，那就不会执行方案二。</p>
-<h4 id="1、动态方法解析"><a href="#1、动态方法解析" class="headerlink" title="1、动态方法解析"></a>1、动态方法解析</h4><blockquote>
-<p> +(BOOL)resolveInstanceMethod:(SEL)sel;</p>
-</blockquote>
-<p>首先当消息接受的对象无法找到方法实现时，运行时系统会调用该函数给对象一次机会来添加相应方法的实现，如果用户在该函数中动态的添加了相应方法的实现，则会跳转到方法的实现。</p>
-<p>通过代码演示，创建三个类分别为dog1，dog2，dog3，分别对应三种方案。  在main.m调用其jump方法。</p>
-<p>方案一dog1动态添加方法的实现：</p>
-<pre><code>#import &quot;dog1.h&quot;
-#import &lt;objc/runtime.h&gt;
-
-void jump(id self,SEL cmd);
-
-@implementation dog1
-
-+(BOOL)resolveInstanceMethod:(SEL)sel{
-    if ([NSStringFromSelector(sel) isEqualToString:@&quot;jump&quot;]) {
-        class_addMethod(self, sel, (IMP)jump, &quot;v@:&quot;);
-        return YES;
-    }
-    return [super resolveInstanceMethod:sel];
-}
-
-void jump(id self,SEL cmd){
-    NSLog(@&quot;%@ jump&quot;,self);
-}
-
-@end
-</code></pre><h4 id="2-备援接受者"><a href="#2-备援接受者" class="headerlink" title="2.备援接受者"></a>2.备援接受者</h4><blockquote>
-<p>-(id)forwardingTargetForSelector:(SEL)aSelector;</p>
-</blockquote>
-<p>如果运行时在消息转发第一步中未找到调用方法的实现，那么接受者会调用上边的方法，该方法返回一个能处理该消息的对象，运行时会对对象方法列表进行查找，如找到则跳转到相应的方法实现，消息转发结束。</p>
-<pre><code>#import &quot;dog2.h&quot;
-#import &quot;dog1.h&quot;
-
-@implementation dog
-
-+(BOOL)resolveInstanceMethod:(SEL)sel{
-    return NO;
-}
-
--(id)forwardingTargetForSelector:(SEL)aSelector{
-
-    dog1 *c=[dog1 new];
-    return c;
-}
-
-@end
-</code></pre><p>方案二中先对方案一中的方法返回NO，运行时就会调用第二个方法。通过控制台可以看到jump方法的调用。</p>
-<h4 id="3-完整的消息转发"><a href="#3-完整的消息转发" class="headerlink" title="3.完整的消息转发"></a>3.完整的消息转发</h4><blockquote>
-<p>-(void)forwardInvocation:(NSInvocation *)anInvocation;</p>
-</blockquote>
-<p>当运行时系统检测到第二步中用户未返回对象时，那么就要启动完整的消息转发机制了。</p>
-<pre><code>#import &quot;dog3.h&quot;
-#import &quot;dog1.h&quot;
-
-@implementation chiken
-
-+(BOOL)resolveInstanceMethod:(SEL)sel{
-    return NO;
-}
-
--(id)forwardingTargetForSelector:(SEL)aSelector{
-    return nil;
-}
-
--(NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
-
-    if ([NSStringFromSelector(aSelector) isEqualToString:@&quot;jump&quot;]) {
-        return [NSMethodSignature signatureWithObjCTypes:&quot;v@:&quot;];
-
-    }
-    return [super methodSignatureForSelector:aSelector];
-}
-
--(void)forwardInvocation:(NSInvocation *)anInvocation{
-
- //改变调用对象   
-//    [anInvocation invokeWithTarget:[[dog1 alloc]init]];
-//改变选择子
-    anInvocation.selector=@selector(run);
-    [anInvocation invokeWithTarget:self];
-}
--(void)run{
-
-    NSLog(@&quot;run&quot;);
-}
-
-@end
-</code></pre><p>方案三必须覆盖两个方法，消息转发有两种选择，一种是改变调用对象，一种是改变方法选择子。</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/15/Objective-C消息转发/" class="archive-article-date">
-  	<time datetime="2016-11-15T04:14:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
+<nav id="article-nav">
   
   
+    <a href="/2016/11/15/Objective-C消息转发/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Objective-C消息转发</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
 
 
       </div>
@@ -384,8 +283,8 @@ void jump(id self,SEL cmd){
 		fancybox: true,
 		mathjax: false,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
