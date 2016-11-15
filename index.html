@@ -123,6 +123,117 @@
       <div class="body-wrap">
         
   
+    <article id="post-iOS网络请求安全https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/16/iOS网络请求安全https/">iOS网络请求安全https</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-Https"><a href="#1-Https" class="headerlink" title="1.Https"></a>1.Https</h3><p>其实HTTPS从最终的数据解析的角度，与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。</p>
+<p>HTTPS交互原理</p>
+<p>　　HTTPS 就是 HTTP协议加了一层SSL协议的加密处理，SSL 证书就是遵守 SSL协议，由受信任的数字证书颁发机构CA，在验证服务器身份后颁发，这是需要花钱滴，签发后的证书作为公钥一般放在服务器的根目录下，便于客户端请求返回给客户端，私钥在服务器的内部中心保存，用于解密公钥。</p>
+<p>　　HTTPS 客户端与服务器交互过程：</p>
+<p>　　1）客户端发送请求，服务器返回公钥给客户端；</p>
+<p>　　2）客户端生成对称加密秘钥，用公钥对其进行加密后，返回给服务器；</p>
+<p>　　3）服务器收到后，利用私钥解开得到对称加密秘钥，保存；</p>
+<p>　　4）之后的交互都使用对称加密后的数据进行交互。</p>
+<p>　　证书</p>
+<p>　　简单说，证书有两种，一种是正经的：</p>
+<p>　　CA颁发的证书</p>
+<p>　　自己生成签发的证书</p>
+<p>　　对于CA颁发的证书，我们直接用AFN请求就行了，对于不是CA颁发的证书我们需要一下几步：  </p>
+<h4 id="一-证书准备"><a href="#一-证书准备" class="headerlink" title="一.证书准备"></a>一.证书准备</h4><p>1.证书转换<br>在服务器人员，给你发送的crt证书后，进到证书路径，执行下面语句  </p>
+<blockquote>
+<p>// openssl x509 -in 你的证书.crt -out 你的证书.cer -outform der  </p>
+</blockquote>
+<p>这样你就可以得到cer类型的证书了。双击，导入电脑。  </p>
+<p>2.证书放入工程<br>1、可以直接把转换好的cer文件拖动到工程中。<br>2、可以在钥匙串内，找到你导入的证书，单击右键，导出项目，就可以导出.cer文件的证书了</p>
+<h4 id="二-代码修改"><a href="#二-代码修改" class="headerlink" title="二.代码修改"></a>二.代码修改</h4><p>1.先在info.plist ，增加如下图的配置<br><img src="file:///Users/jj/Desktop/20160929091050498.png" alt="image">  </p>
+<p>使用AFN发送网络请求：<br>第一步：新增一个类  </p>
+<pre><code>+ (AFSecurityPolicy*)customSecurityPolicy
+{
+    // /先导入证书
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:@&quot;hgcang&quot; ofType:@&quot;cer&quot;];//证书的路径
+    NSData *certData = [NSData dataWithContentsOfFile:cerPath];
+
+    // AFSSLPinningModeCertificate 使用证书验证模式
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+
+    // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
+    // 如果是需要验证自建证书，需要设置为YES
+    securityPolicy.allowInvalidCertificates = YES;
+
+    //validatesDomainName 是否需要验证域名，默认为YES；
+    //假如证书的域名与你请求的域名不一致，需把该项设置为NO；如设成NO的话，即服务器使用其他可信任机构颁发的证书，也可以建立连接，这个非常危险，建议打开。
+    //置为NO，主要用于这种情况：客户端请求的是子域名，而证书上的是另外一个域名。因为SSL证书上的域名是独立的，假如证书上注册的域名是www.google.com，那么mail.google.com是无法验证通过的；当然，有钱可以注册通配符的域名*.google.com，但这个还是比较贵的。
+    //如置为NO，建议自己添加对应域名的校验逻辑。
+    securityPolicy.validatesDomainName = NO;
+
+    securityPolicy.pinnedCertificates = @[certData];
+
+    return securityPolicy;
+}  
+</code></pre><p>第二步：直接在请求方法里加入    </p>
+<pre><code>+ (void)post:(NSString *)url params:(NSDictionary *)params success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    // 1.获得请求管理者
+    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
+    // 2.申明返回的结果是text/html类型
+    mgr.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+    // 加上这行代码，https ssl 验证。
+    //[mgr setSecurityPolicy:[self customSecurityPolicy]];
+
+    // 3.发送POST请求
+    [mgr POST:url parameters:params
+      success:^(AFHTTPRequestOperation *operation, id responseObj) {
+          if (success) {
+              success(responseObj);
+          }
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          if (failure) {
+              failure(error);
+          }
+      }];
+}
+</code></pre>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/16/iOS网络请求安全https/" class="archive-article-date">
+  	<time datetime="2016-11-15T16:13:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
+</a>
+      
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-runloop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     

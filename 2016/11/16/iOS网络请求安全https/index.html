@@ -6,30 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://zhaojianjun.me">
-  <title>Runloop | JianJun Zhao&#39;s Blog</title>
+  <title>iOS网络请求安全https | JianJun Zhao&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Runloop是事件接收和分发机制的一个实现。一般一个线程一次只能执行一个任务，执行完成后线程就会推出，我们需要一个机制，让线程能随时处理事件但不能退出。runloop就是这样的机制。
-Runloop 对外的接口：
-CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserverRef  
-
-####C">
+  <meta name="description" content="1.Https其实HTTPS从最终的数据解析的角度，与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。
+HTTPS交互原理
+　　HTTPS 就是 HTTP协议加了一层SSL协议的加密处理，SSL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Runloop">
-<meta property="og:url" content="http://zhaojianjun.me/2016/11/15/runloop/index.html">
+<meta property="og:title" content="iOS网络请求安全https">
+<meta property="og:url" content="http://zhaojianjun.me/2016/11/16/iOS网络请求安全https/index.html">
 <meta property="og:site_name" content="JianJun Zhao's Blog">
-<meta property="og:description" content="Runloop是事件接收和分发机制的一个实现。一般一个线程一次只能执行一个任务，执行完成后线程就会推出，我们需要一个机制，让线程能随时处理事件但不能退出。runloop就是这样的机制。
-Runloop 对外的接口：
-CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserverRef  
-
-####C">
-<meta property="og:updated_time" content="2016-11-15T10:01:49.000Z">
+<meta property="og:description" content="1.Https其实HTTPS从最终的数据解析的角度，与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。
+HTTPS交互原理
+　　HTTPS 就是 HTTP协议加了一层SSL协议的加密处理，SSL">
+<meta property="og:image" content="http://zhaojianjun.me/file:///Users/jj/Desktop/20160929091050498.png">
+<meta property="og:updated_time" content="2016-11-15T16:35:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Runloop">
-<meta name="twitter:description" content="Runloop是事件接收和分发机制的一个实现。一般一个线程一次只能执行一个任务，执行完成后线程就会推出，我们需要一个机制，让线程能随时处理事件但不能退出。runloop就是这样的机制。
-Runloop 对外的接口：
-CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserverRef  
-
-####C">
+<meta name="twitter:title" content="iOS网络请求安全https">
+<meta name="twitter:description" content="1.Https其实HTTPS从最终的数据解析的角度，与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。
+HTTPS交互原理
+　　HTTPS 就是 HTTP协议加了一层SSL协议的加密处理，SSL">
+<meta name="twitter:image" content="http://zhaojianjun.me/file:///Users/jj/Desktop/20160929091050498.png">
   
     <link rel="alternative" href="/atom.xml" title="JianJun Zhao&#39;s Blog" type="application/atom+xml">
   
@@ -137,7 +133,7 @@ CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserver
 </nav>
 
       <div class="body-wrap">
-        <article id="post-runloop" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-iOS网络请求安全https" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -147,7 +143,7 @@ CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserver
         
   
     <h1 class="article-title" itemprop="name">
-      Runloop
+      iOS网络请求安全https
     </h1>
   
 
@@ -155,41 +151,80 @@ CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserver
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Runloop是事件接收和分发机制的一个实现。<br>一般一个线程一次只能执行一个任务，执行完成后线程就会推出，我们需要一个机制，让线程能随时处理事件但不能退出。runloop就是这样的机制。</p>
-<p>Runloop 对外的接口：</p>
-<font color="blue">CFRunLoopRef<br>CFRunLoopModeRef<br>CFRunLoopSourceRef<br>CFRunLoopTimerRef<br>CFRunLoopObserverRef<br></font>  
-
-<p>####CFRunloopModeRef:<br>一个runloop包含若干个Mode，每个Mode又包含若干个source/timer/observer。每次调用runloop的主函数时，只能指定其中一个Mode，这个Mode被称为currentMode。如果切换Mode，只能退出runloop，再重新指定一个Mode进入。这样做主要是为了分隔不用组的source/timer/observer，让其互不影响。</p>
-<h5 id="RunloopMode："><a href="#RunloopMode：" class="headerlink" title="RunloopMode："></a>RunloopMode：</h5><p><font color="red" size="3">NSDefaultRunLoopMode</font> 这是大多数操作中使用的模式。  </p>
-<p><font color="red" size="3"> NSConnectionReplyMode </font>    该模式用来监控NSConnection对象。你通常不需要在你的代码中使用该模式。  </p>
-<p><font color="red" size="3"> NSModalPanelRunLoopMode </font>    Cocoa使用该模式来标识用于modal panel（模态面板）的事件。  </p>
-<p><font color="red" size="3">NSEventTracking（UITrackingRunLoopMode）</font>  Cocoa使用该模式来处理用户界面相关的事件。  </p>
-<p><font color="red" size="3"> NSRunLoopCommonModes </font> 这是一组可配置的通用模式。将input sources与该模式关联则同时也将input sources与该组中的其它模式进行了关联。对于Cocoa应用，该模式缺省的包含了default，modal以及event tracking模式。</p>
-<p>一个常见的问题就是，主线程中一个NSTimer添加在default mode中，当界面上有一些scroll view的滚动频繁发生导致run loop运行在UItraking mode中，从而这个timer没能如期望那般的运行。所以，我们就可以把这个timer加到NSRunLoopCommonModes中来解决。</p>
-<h5 id="CFRunLoopSourceRef"><a href="#CFRunLoopSourceRef" class="headerlink" title="CFRunLoopSourceRef"></a>CFRunLoopSourceRef</h5><p>CFRunLoopSourceRef是事件产生的地方。Source有两个版本：Source0 和 Source1。<br>• Source0 只包含了一个回调（函数指针），它并不能主动触发事件。使用时，你需要先调用 CFRunLoopSourceSignal(source)，将这个 Source 标记为待处理，然后手动调用 CFRunLoopWakeUp(runloop) 来唤醒 RunLoop，让其处理这个事件。<br>• Source1 包含了一个 mach_port 和一个回调（函数指针），被用于通过内核和其他线程相互发送消息。这种 Source 能主动唤醒 RunLoop 的线程，其原理在下面会讲到。  </p>
-<h5 id="CFRunLoopTimerRef"><a href="#CFRunLoopTimerRef" class="headerlink" title="CFRunLoopTimerRef"></a>CFRunLoopTimerRef</h5><p>CFRunLoopTimerRef 是基于时间的触发器，它和 NSTimer 是toll-free bridged 的，可以混用。其包含一个时间长度和一个回调（函数指针）。当其加入到 RunLoop 时，RunLoop会注册对应的时间点，当时间点到时，RunLoop会被唤醒以执行那个回调。</p>
-<h5 id="CFRunLoopObserverRef"><a href="#CFRunLoopObserverRef" class="headerlink" title="CFRunLoopObserverRef"></a>CFRunLoopObserverRef</h5><p>CFRunLoopObserverRef 是观察者，每个 Observer 都包含了一个回调（函数指针），当 RunLoop 的状态发生变化时，观察者就能通过回调接受到这个变化。可以观测的时间点有以下几个：</p>
+        <h3 id="1-Https"><a href="#1-Https" class="headerlink" title="1.Https"></a>1.Https</h3><p>其实HTTPS从最终的数据解析的角度，与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。</p>
+<p>HTTPS交互原理</p>
+<p>　　HTTPS 就是 HTTP协议加了一层SSL协议的加密处理，SSL 证书就是遵守 SSL协议，由受信任的数字证书颁发机构CA，在验证服务器身份后颁发，这是需要花钱滴，签发后的证书作为公钥一般放在服务器的根目录下，便于客户端请求返回给客户端，私钥在服务器的内部中心保存，用于解密公钥。</p>
+<p>　　HTTPS 客户端与服务器交互过程：</p>
+<p>　　1）客户端发送请求，服务器返回公钥给客户端；</p>
+<p>　　2）客户端生成对称加密秘钥，用公钥对其进行加密后，返回给服务器；</p>
+<p>　　3）服务器收到后，利用私钥解开得到对称加密秘钥，保存；</p>
+<p>　　4）之后的交互都使用对称加密后的数据进行交互。</p>
+<p>　　证书</p>
+<p>　　简单说，证书有两种，一种是正经的：</p>
+<p>　　CA颁发的证书</p>
+<p>　　自己生成签发的证书</p>
+<p>　　对于CA颁发的证书，我们直接用AFN请求就行了，对于不是CA颁发的证书我们需要一下几步：  </p>
+<h4 id="一-证书准备"><a href="#一-证书准备" class="headerlink" title="一.证书准备"></a>一.证书准备</h4><p>1.证书转换<br>在服务器人员，给你发送的crt证书后，进到证书路径，执行下面语句  </p>
 <blockquote>
-<p>typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {<br>    kCFRunLoopEntry         = (1UL &lt;&lt; 0), // 即将进入Loop<br>    kCFRunLoopBeforeTimers  = (1UL &lt;&lt; 1), // 即将处理 Timer<br>    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2), // 即将处理 Source<br>    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5), // 即将进入休眠<br>    kCFRunLoopAfterWaiting  = (1UL &lt;&lt; 6), // 刚从休眠中唤醒<br>    kCFRunLoopExit          = (1UL &lt;&lt; 7), // 即将退出Loop<br>};</p>
+<p>// openssl x509 -in 你的证书.crt -out 你的证书.cer -outform der  </p>
 </blockquote>
-<h4 id="Runloop和线程的关系"><a href="#Runloop和线程的关系" class="headerlink" title="Runloop和线程的关系"></a>Runloop和线程的关系</h4><p>Runloop和线层是紧密相连的，可以说runloop是为了线程而生的，没有线程就没有存在的必要。<br>1.对于主线程的runloop是默认开启的。<br>iOS的应用程序里，程序启动后会有一个main函数  </p>
-<pre><code>int main(int argc, char * argv[]) {
-@autoreleasepool {    return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
-}
-}
-</code></pre><p>UIApplicationMain（）函数，这个方法会为main thread设置一个NSRunloop对象。  </p>
-<p>2.对于其他子线程来说，runloop默认是没有启动的，如果你需要更多的线程交互则需要手动配置和启动。</p>
-<p>3.获取当前线程的runloop</p>
-<blockquote>
-<p>NSRunLoop *runloop = [NSRunLoop currentRunLoop];</p>
-</blockquote>
+<p>这样你就可以得到cer类型的证书了。双击，导入电脑。  </p>
+<p>2.证书放入工程<br>1、可以直接把转换好的cer文件拖动到工程中。<br>2、可以在钥匙串内，找到你导入的证书，单击右键，导出项目，就可以导出.cer文件的证书了</p>
+<h4 id="二-代码修改"><a href="#二-代码修改" class="headerlink" title="二.代码修改"></a>二.代码修改</h4><p>1.先在info.plist ，增加如下图的配置<br><img src="file:///Users/jj/Desktop/20160929091050498.png" alt="image">  </p>
+<p>使用AFN发送网络请求：<br>第一步：新增一个类  </p>
+<pre><code>+ (AFSecurityPolicy*)customSecurityPolicy
+{
+    // /先导入证书
+    NSString *cerPath = [[NSBundle mainBundle] pathForResource:@&quot;hgcang&quot; ofType:@&quot;cer&quot;];//证书的路径
+    NSData *certData = [NSData dataWithContentsOfFile:cerPath];
 
+    // AFSSLPinningModeCertificate 使用证书验证模式
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+
+    // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
+    // 如果是需要验证自建证书，需要设置为YES
+    securityPolicy.allowInvalidCertificates = YES;
+
+    //validatesDomainName 是否需要验证域名，默认为YES；
+    //假如证书的域名与你请求的域名不一致，需把该项设置为NO；如设成NO的话，即服务器使用其他可信任机构颁发的证书，也可以建立连接，这个非常危险，建议打开。
+    //置为NO，主要用于这种情况：客户端请求的是子域名，而证书上的是另外一个域名。因为SSL证书上的域名是独立的，假如证书上注册的域名是www.google.com，那么mail.google.com是无法验证通过的；当然，有钱可以注册通配符的域名*.google.com，但这个还是比较贵的。
+    //如置为NO，建议自己添加对应域名的校验逻辑。
+    securityPolicy.validatesDomainName = NO;
+
+    securityPolicy.pinnedCertificates = @[certData];
+
+    return securityPolicy;
+}  
+</code></pre><p>第二步：直接在请求方法里加入    </p>
+<pre><code>+ (void)post:(NSString *)url params:(NSDictionary *)params success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    // 1.获得请求管理者
+    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
+    // 2.申明返回的结果是text/html类型
+    mgr.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+    // 加上这行代码，https ssl 验证。
+    //[mgr setSecurityPolicy:[self customSecurityPolicy]];
+
+    // 3.发送POST请求
+    [mgr POST:url parameters:params
+      success:^(AFHTTPRequestOperation *operation, id responseObj) {
+          if (success) {
+              success(responseObj);
+          }
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          if (failure) {
+              failure(error);
+          }
+      }];
+}
+</code></pre>
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2016/11/15/runloop/" class="archive-article-date">
-  	<time datetime="2016-11-15T08:48:19.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
+      <a href="/2016/11/16/iOS网络请求安全https/" class="archive-article-date">
+  	<time datetime="2016-11-15T16:13:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
 </a>
       
       
@@ -202,18 +237,9 @@ CFRunLoopRefCFRunLoopModeRefCFRunLoopSourceRefCFRunLoopTimerRefCFRunLoopObserver
   
 <nav id="article-nav">
   
-    <a href="/2016/11/16/iOS网络请求安全https/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          iOS网络请求安全https
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/11/15/项目中常用的宏定义/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">项目中常用的宏定义</div>
+    <a href="/2016/11/15/runloop/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Runloop</div>
       <i class="icon-circle-right"></i>
     </a>
   
