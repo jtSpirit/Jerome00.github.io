@@ -123,6 +123,106 @@
       <div class="body-wrap">
         
   
+    <article id="post-iOS中Objective-C和JS交互" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/16/iOS中Objective-C和JS交互/">iOS中Objective-C和JS交互</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>iOS与JS交互的几种方式：<br>1.拦截协议：拦截协议需要双方共同协商为协议规定一套准则，在交互中要遵循该准则。拦截协议不需要引入任何框架，适合多个平台使用。</p>
+<p>2.第三方框架WebViewJavaScriptBridge：基于拦截协议进行的封装。</p>
+<p>3.JavaScriptCore：iOS7之后出现的系统的框架</p>
+<h4 id="iOS7之前，Objective-c调用JavaScript代码"><a href="#iOS7之前，Objective-c调用JavaScript代码" class="headerlink" title="iOS7之前，Objective-c调用JavaScript代码"></a>iOS7之前，Objective-c调用JavaScript代码</h4><p>iOS7以前，Objective-C调用JavaScript的方式只有一种，就是通过UIWebView对象的stringByEvaluatingJavaScriptFromString:方法。</p>
+<p>stringByEvaluatingJavaScriptFromString:方法只能在主线程执行。  </p>
+<pre><code>spatch_queue_t queue = dispatch_get_main_queue();
+dispatch_async(queue, ^{
+        [self.webView stringByEvaluatingJavaScriptFromString:@&quot;var javascript = 1 + 2&quot;];
+});
+</code></pre><p>通过stringByEvaluatingJavaScriptFromString:方法可以简单地调用系统提供的JavaScript方法  </p>
+<pre><code>- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@&quot;document.title&quot;];
+    NSLog(@&quot;%@&quot;, title);
+}
+</code></pre><p>####iOS7之前，JavaScript调用Objective-C  </p>
+<p>URL请求拦截。</p>
+<p>在Objective-C代码里设置UIWebViewDelegate代理，实现代理方法：  </p>
+<pre><code>- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+</code></pre><p>解释：该方法可以监听到UIWebView中发出的URL请求，通过与H5协商一个URL通信协议，来拦截指定的URL，做相应的操作，并阻止此链接的跳转。</p>
+<p>###iOS7之后，JavaScriptCore的引入，使得Objective-C与JavaScript的交互更为容易  </p>
+<p>####JavaScriptCore中常见的几种类型<br>JSContext：代表JS的执行环境，通过evaluateScript:方法就可以执行JS方法。<br>JSValue：封装了JS与ObjC中对应的模型，以及调用JS的API等。<br>JSExport：一个协议，通过遵守此协议，可以定义我们自己的协议，在协议中声明的API都会在JS中暴露出来，能被JS调用。<br>JSManagedValue：管理数据和方法的类。<br>JSVirtualMachine：处理线程相关，使用较少。</p>
+<p>在ObjC中通过JSContext注入模型，然后调用模型的方法：<br>第一步：需要声明一个与JS进行交互的协议（NativeApisProtocol），要求该协议遵守JSExport协议。<br>第二步：新建一个模型（NativeAPIs），要求该模型遵守NativeApisProtocol协议。一般而言，需要在NativeAPIs模型中声明一个JSContext属性，便于与JS交互。    </p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+#import &lt;JavaScriptCore/JavaScriptCore.h&gt;
+#import &lt;UIKit/UIKit.h&gt;
+
+// 声明与JS交互的协议
+@protocol NativeApisProtocol &lt;JSExport&gt; // 遵守JSExport协议
+
+// 调用系统相机
+- (void)callCamera;
+
+// 调用系统分享
+- (void)share:(NSString *)shareInfo;
+
+// 打开宁波手机阅读
+- (void)openNBPhoneReader;
+
+@end
+</code></pre><p>第三步：实现该模型（NativeAPIs），即在NativeAPIs.m文件中实现NativeApisProtocol协议中定义的方法。<br>第四步：在ViewController.m的-webViewDidFinishLoad:方法中获取当前JS执行环境（self.jsContext），然后将NativeAPIs模型注入到JS执行环境。 </p>
+<pre><code>- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    NSLog(@&quot;网页加载完毕------&quot;);
+
+    // 获取JS上下文运行环境
+    self.jsContext = [webView valueForKeyPath:@&quot;documentView.webView.mainFrame.javaScriptContext&quot;];
+    NativeAPIs *nativeAPIs = [[NativeAPIs alloc] init];
+    // 将NativeAPIs模型注入JS
+    self.jsContext[@&quot;NativeApis&quot;] = nativeAPIs;
+    nativeAPIs.jsContext = self.jsContext;
+
+    self.jsContext.exceptionHandler = ^(JSContext *context, JSValue *exceptionValue) {
+        context.exception = exceptionValue;
+        NSLog(@&quot;异常信息: %@&quot;, exceptionValue);
+    };
+}
+</code></pre><p>注意：NativeApisProtocol协议中定义的方法是在子线程中执行的，如果在所定义的方法中需要修改界面或者跳转之类的，需要通过GCD回主线程操作。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/16/iOS中Objective-C和JS交互/" class="archive-article-date">
+  	<time datetime="2016-11-16T07:11:57.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
+</a>
+      
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-iOS网络请求安全https" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
