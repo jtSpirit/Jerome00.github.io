@@ -158,7 +158,7 @@ dispatch_async(queue, ^{
 </code></pre><h4 id="iOS7之前，JavaScript调用Objective-C"><a href="#iOS7之前，JavaScript调用Objective-C" class="headerlink" title="iOS7之前，JavaScript调用Objective-C"></a>iOS7之前，JavaScript调用Objective-C</h4><p>URL请求拦截。</p>
 <p>在Objective-C代码里设置UIWebViewDelegate代理，实现代理方法：  </p>
 <pre><code>- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
-</code></pre><p>解释：该方法可以监听到UIWebView中发出的URL请求，通过与H5协商一个URL通信协议，来拦截指定的URL，做相应的操作，并阻止此链接的跳转。</p>
+</code></pre><p>解释：该方法可以监听到UIWebView中发出的URL请求，通过与H5协商一个URL通信协议，来拦截指定的URL，做相应的操作，并阻止此链接的跳转。  </p>
 <h3 id="iOS7之后，JavaScriptCore的引入，使得Objective-C与JavaScript的交互更为容易"><a href="#iOS7之后，JavaScriptCore的引入，使得Objective-C与JavaScript的交互更为容易" class="headerlink" title="iOS7之后，JavaScriptCore的引入，使得Objective-C与JavaScript的交互更为容易"></a>iOS7之后，JavaScriptCore的引入，使得Objective-C与JavaScript的交互更为容易</h3><p>####JavaScriptCore中常见的几种类型<br>JSContext：代表JS的执行环境，通过evaluateScript:方法就可以执行JS方法。<br>JSValue：封装了JS与ObjC中对应的模型，以及调用JS的API等。<br>JSExport：一个协议，通过遵守此协议，可以定义我们自己的协议，在协议中声明的API都会在JS中暴露出来，能被JS调用。<br>JSManagedValue：管理数据和方法的类。<br>JSVirtualMachine：处理线程相关，使用较少。</p>
 <p>在ObjC中通过JSContext注入模型，然后调用模型的方法：<br>第一步：需要声明一个与JS进行交互的协议（NativeApisProtocol），要求该协议遵守JSExport协议。<br>第二步：新建一个模型（NativeAPIs），要求该模型遵守NativeApisProtocol协议。一般而言，需要在NativeAPIs模型中声明一个JSContext属性，便于与JS交互。    </p>
 <pre><code>#import &lt;Foundation/Foundation.h&gt;
