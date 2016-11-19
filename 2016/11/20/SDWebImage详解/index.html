@@ -6,14 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://zhaojianjun.me">
-  <title>Archives: 2016/11 | JianJun Zhao&#39;s Blog</title>
+  <title>SDWebImage详解 | JianJun Zhao&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="JianJun Zhao's Blog">
-<meta property="og:url" content="http://zhaojianjun.me/archives/2016/11/index.html">
+  <meta name="description" content="这个类库是比较常用的一个类库，用来加载来自网络的远程图片，具有缓存功能，异步下载等特征。平时用的比较多的就是UIimageView+WebCache类。  
+我们来分下下SDWebimage的加载图片的流程：  
+
+入口 setImageWithURL:placeholderImage:options: 会先把 placeholderImage 显示，然后 SDWebImageManager 根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SDWebImage详解">
+<meta property="og:url" content="http://zhaojianjun.me/2016/11/20/SDWebImage详解/index.html">
 <meta property="og:site_name" content="JianJun Zhao's Blog">
+<meta property="og:description" content="这个类库是比较常用的一个类库，用来加载来自网络的远程图片，具有缓存功能，异步下载等特征。平时用的比较多的就是UIimageView+WebCache类。  
+我们来分下下SDWebimage的加载图片的流程：  
+
+入口 setImageWithURL:placeholderImage:options: 会先把 placeholderImage 显示，然后 SDWebImageManager 根据">
+<meta property="og:updated_time" content="2016-11-19T18:16:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JianJun Zhao's Blog">
+<meta name="twitter:title" content="SDWebImage详解">
+<meta name="twitter:description" content="这个类库是比较常用的一个类库，用来加载来自网络的远程图片，具有缓存功能，异步下载等特征。平时用的比较多的就是UIimageView+WebCache类。  
+我们来分下下SDWebimage的加载图片的流程：  
+
+入口 setImageWithURL:placeholderImage:options: 会先把 placeholderImage 显示，然后 SDWebImageManager 根据">
   
     <link rel="alternative" href="/atom.xml" title="JianJun Zhao&#39;s Blog" type="application/atom+xml">
   
@@ -121,184 +134,101 @@
 </nav>
 
       <div class="body-wrap">
+        <article id="post-SDWebImage详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
         
   
+    <h1 class="article-title" itemprop="name">
+      SDWebImage详解
+    </h1>
   
+
+      </header>
     
-    
+    <div class="article-entry" itemprop="articleBody">
       
+        <p>这个类库是比较常用的一个类库，用来加载来自网络的远程图片，具有缓存功能，异步下载等特征。<br>平时用的比较多的就是UIimageView+WebCache类。  </p>
+<p>我们来分下下SDWebimage的加载图片的流程：  </p>
+<ol>
+<li>入口 setImageWithURL:placeholderImage:options: 会先把 placeholderImage 显示，然后 SDWebImageManager 根据 URL 开始处理图片。  </li>
+<li>进入 SDWebImageManager-downloadWithURL:delegate:options:userInfo:，交给 SDImageCache 从缓存查找图片是否已经下载 queryDiskCacheForKey:delegate:userInfo:.  </li>
+<li>先从内存图片缓存查找是否有图片，如果内存中已经有图片缓存，SDImageCacheDelegate 回调 imageCache:didFindImage:forKey:userInfo: 到 SDWebImageManager。  </li>
+<li>SDWebImageManagerDelegate 回调 webImageManager:didFinishWithImage: 到 UIImageView+WebCache 等前端展示图片。  </li>
+<li>如果内存缓存中没有，生成 NSInvocationOperation 添加到队列开始从硬盘查找图片是否已经缓存。  </li>
+<li>根据 URLKey 在硬盘缓存目录下尝试读取图片文件。这一步是在 NSOperation 进行的操作，所以回主线程进行结果回调 notifyDelegate:。  </li>
+<li>如果上一操作从硬盘读取到了图片，将图片添加到内存缓存中（如果空闲内存过小，会先清空内存缓存）。SDImageCacheDelegate 回调 imageCache:didFindImage:forKey:userInfo:。进而回调展示图片。  </li>
+<li>如果从硬盘缓存目录读取不到图片，说明所有缓存都不存在该图片，需要下载图片，回调 imageCache:didNotFindImageForKey:userInfo:。  </li>
+<li>共享或重新生成一个下载器 SDWebImageDownloader 开始下载图片。  </li>
+<li>图片下载由 NSURLConnection 来做，实现相关 delegate 来判断图片下载中、下载完成和下载失败。  </li>
+<li>connection:didReceiveData: 中利用 ImageIO 做了按图片下载进度加载效果。  </li>
+<li>connectionDidFinishLoading: 数据下载完成后交给 SDWebImageDecoder 做图片解码处理。  </li>
+<li>图片解码处理在一个 NSOperationQueue 完成，不会拖慢主线程 UI。如果有需要对下载的图片进行二次处理，最好也在这里完成，效率会好很多。  </li>
+<li>在主线程 notifyDelegateOnMainThreadWithInfo: 宣告解码完成，imageDecoder:didFinishDecodingImage:userInfo: 回调给 SDWebImageDownloader。  </li>
+<li>imageDownloader:didFinishWithImage: 回调给 SDWebImageManager 告知图片下载完成。  </li>
+<li>通知所有的 downloadDelegates 下载完成，回调给需要的地方展示图片。  </li>
+<li>将图片保存到 SDImageCache 中，内存缓存和硬盘缓存同时保存。写文件到硬盘也在以单独 NSInvocationOperation 完成，避免拖慢主线程。  </li>
+<li>SDImageCache 在初始化的时候会注册一些消息通知，在内存警告或退到后台的时候清理内存图片缓存，应用结束的时候清理过期图片。 </li>
+</ol>
+<p>主要用到的对象：<br>1、UIImageView (WebCache)类别，入口封装，实现读取图片完成后的回调<br>2、SDWebImageManager，对图片进行管理的中转站，记录那些图片正在读取。向下层读取Cache（调用SDImageCache），或者向网络读取对象（调用SDWebImageDownloader）。实现SDImageCache和SDWebImageDownloader的回调。<br>3、SDImageCache，根据URL的MD5摘要对图片进行存储和读取（实现存在内存中或者存在硬盘上两种实现）<br>实现图片和内存清理工作。<br>4、SDWebImageDownloader，根据URL向网络读取数据（实现部分读取和全部读取后再通知回调两种方式） </p>
+
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/20/SDWebImage详解/" class="archive-article-date">
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/20/SDWebImage详解/" class="archive-article-date">
   	<time datetime="2016-11-19T18:06:07.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-20</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/20/SDWebImage详解/">SDWebImage详解</a>
-    </h1>
-  
+      
+      
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/16/iOS中Objective-C和JS交互/" class="archive-article-date">
-  	<time datetime="2016-11-16T07:11:57.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/16/iOS中Objective-C和JS交互/">iOS中Objective-C和JS交互</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/16/iOS中Objective-C和JS交互/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS中Objective-C和JS交互</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/16/iOS网络请求安全https/" class="archive-article-date">
-  	<time datetime="2016-11-15T16:13:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/16/iOS网络请求安全https/">iOS网络请求安全https</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/15/runloop/" class="archive-article-date">
-  	<time datetime="2016-11-15T08:48:19.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/15/runloop/">Runloop</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/15/项目中常用的宏定义/" class="archive-article-date">
-  	<time datetime="2016-11-15T05:39:38.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/15/项目中常用的宏定义/">项目中常用的宏定义</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/15/Objective-C消息转发/" class="archive-article-date">
-  	<time datetime="2016-11-15T04:14:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/15/Objective-C消息转发/">Objective-C消息转发</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
 
 
       </div>
@@ -321,8 +251,8 @@
 		mathjax: false,
 		animate: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
