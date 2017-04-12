@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: 100%;
+    width:100%;
+    /*background-color: #61cbaf;*/
+}
+
+#tou {
+    background: url(../imgs/home-bg.jpg) center;
+    background-size: cover;
+}
+.affixBar {
+    width: 100%;
+}
+#topNav {
+    height: 70px;
+    line-height: 70px;
+}
+navbar-default{
+    background-color: #4794a6;
+    border: none;
+    box-shadow: 0px 2px 8px rgba(50,50,50,0.2);
+    opacity: 0.0;
+}
+.icon img{
+    height: 66px;
+    width: 66px;
+    border: 1px solid #ffffff;
+    border-radius: 33px;
+}
+.icon span {
+    padding-left: 10px;
+}
+
+.navbar-nav li a{
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+    height: 70px;
+    line-height: 35px;
+}
+
+#home {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+.avder{
+    height: 270px;
+    position: relative;
+}
+.avder img{
+    height: 80px;
+    width: 80px;
+    margin-top: 115px;
+    border: 1px solid #56c6ab;
+    border-radius: 40px;
+    /*position: absolute;*/
+
+}
+.jianjie span{
+    margin-top: 30px;
+    font-size: 30px;
+    /*color: #000000;*/
+}
+.jianjie1 span {
+    margin-top: 30px;
+    font-size: 30px;
+    /*color: #000;*/
+}
+.lizhi {
+    margin:0 auto;
+    padding-top: 150px;
+    font-size: 25px;
+    padding-bottom: 80px;
+}
+@keyframes bounce-down {
+    25% {
+        transform: translateY(-8px);
+    }
+    50%, 100% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(8px);
+    }
+}
+.fa-angle-double-down {
+    position: absolute;
+    bottom: 20px;
+    font-size: 60px;
+    animation: bounce-down 1s linear infinite;
+}
+.APP {
+
+}
+.app {
+    background-color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 200%;
+    padding-left: 30px;
+}
+.app_size {
+    float: left;
+    width: 25%;
+    height: 280px;
+    position: relative;
+}
+.app_size > div {
+    text-align: center;
+    line-height: 50px;
+    position: absolute;
+    bottom: 50px;
+    left: 0px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 400;
+}
+.app_size img {
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    margin-left: -60px;
+}
+.app_size div a {
+    text-decoration: none;
+}
