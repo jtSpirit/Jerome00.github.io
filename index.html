@@ -4,106 +4,280 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="iOS开发,前端小白个人站点">
+    <meta name="keywords" content="Jerome,iOS,Swift,前端,css3,w3c,js,javaScript,前端工程师">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Blog</title>
+    <title>JJZhao-iOS Developer</title>
 
     <!-- Bootstrap -->
-    <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/index.css">
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 </head>
 <body>
-<!--头部导航栏-->
-<div id="tou">
-    <!--<div class="affixBar" data-spy="affix" data-offset-top="60" data-offset-bottom="200">-->
-        <nav id="topNav" class="navbar ">
-            <div class="container">
-                <div class="navbar-header">
-                    <div class="icon">
-                        <img src="../imgs/icon.jpg" alt="JianJun Zhao">
-                        <span class="name">JianJun Zhao</span>
-                    </div>
+<!--导航栏-->
+   <div class="page" id="page1">
+       <div class="main">
+           <nav class="navbar navbar-fixed-page" role="navigation">
+               <div class="container">
+                   <div class="navbar-header">
+                       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                           <span class="sr-only">Toggle navigation</span>
+                           <span class="icon-bar"></span>
+                           <span class="icon-bar"></span>
+                           <span class="icon-bar"></span>
+                       </button>
+                   </div>
+                   <div class="navbar-header pc-navbar-header">
+                       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                           <ul class="nav navbar-nav">
+                               <li><a href="#page1" class="scroll">首页</a></li>
+                               <li><a href="#zuopin" class="scroll">作品</a></li>
+                               <li><a href="#page3" class="scroll">博客</a></li>
+                               <li><a href="#page4" class="scroll">关于</a></li>
+                               <li><a href="#page5" class="scroll">联系我</a></li>
+                           </ul>
+                       </div>
+                   </div>
+                   <div class="logo">
+                       <img src="img/icon.jpg" alt="JJ">
+                   </div>
+                   <div class="name">
+                       <span>JianJun Zhao</span>
+                   </div>
+                   <div class="des">
+                       <span>iOS / WEB</span>
+                       <span class="end">&nbsp;Developer</span>
+                   </div>
+                   <div class="bottom">假如一切因为热爱</div>
+                   <div class="arrow">
+                       <a href="#" class="glyphicon glyphicon-menu-down"></a>
+                       <!--<span class="glyphicon glyphicon-menu-down"></span>-->
+                   </div>
+               </div>
+           </nav>
+       </div>
+   </div>
+<!--bbs-->
+    <section id="zuopin" class="page">
+        <div class="container">
+            <div class="row wow fadeInUp" data-wow-duration="0.5s">
+                <div class="col-md-3">
+                    <img src="img/wuquxingicon.png" class="img-responsive" alt="">
+                    <h3>武曲星</h3>
+                    <a href="https://itunes.apple.com/cn/app/%E6%AD%A6%E6%9B%B2%E6%98%9F-%E4%BF%9D%E9%99%A9%E4%BB%A3%E7%90%86%E4%BA%BA%E7%A7%BB%E5%8A%A8%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0/id949739473?mt=8" class="btn btn-primary">iPhone版下载</a>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">作品</a></li>
-                        <li><a href="#">博客</a></li>
-                        <li><a href="#">关于</a></li>
-                        <li><a href="#">联系我</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div>
-        </nav>
-    <!--</div>-->
-    <section id="home">
-        <div class="filter">
-            <div class="container">
-                <div class="avder">
-                    <img src="../imgs/icon.jpg" alt="">
+                <div class="col-md-3">
+                    <img src="img/youbao.png" class="img-responsive" alt="">
+                    <h3>有宝</h3>
+                    <a href="https://itunes.apple.com/cn/app/%E6%9C%89%E5%AE%9D/id1034634211?mt=8" class="btn btn-primary">iPhone版下载</a>
                 </div>
-                <div class="jianjie">
-                    <span>JianJun Zhao</span>
+                <div class="col-md-3">
+                    <img src="img/baojiachexian.png" class="img-responsive" alt="">
+                    <h3>保驾车险</h3>
+                    <a href="https://itunes.apple.com/cn/app/%E4%BF%9D%E9%A9%BE%E8%BD%A6%E9%99%A9-%E8%BD%A6%E9%99%A9%E6%AF%94%E4%BB%B7%E8%B4%AD%E4%B9%B0-%E8%BD%A6%E9%99%A9%E5%AF%BC%E8%B4%AD-%E5%85%A8%E5%9B%BD%E8%BD%A6%E8%BE%86%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E5%85%BB%E8%BD%A6%E4%BF%9D%E5%85%BB/id988748315?mt=8" class="btn btn-primary">iPhone版下载</a>
                 </div>
-                <div class="jianjie1">
-                    <span>iOS开发工程师 / 前端小白 / 老年程序员 </span>
-                </div>
-                <div class="lizhi">
-                    <span>假如一切都是因为热爱</span>
-                </div>
-                <div>
-                    <i class="fa fa-angle-double-down"></i>
+                <div class="col-md-3">
+                    <img src="img/baojiaweizhang.png" class="img-responsive" alt="">
+                    <h3>保驾违章查询</h3>
+                    <a href="https://itunes.apple.com/cn/app/%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E4%BF%9D%E9%A9%BE%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A22016%E4%B8%93%E4%B8%9A%E7%89%88-%E5%85%8D%E8%B4%B9%E6%94%AF%E6%8C%81%E5%85%A8%E5%9B%BD%E8%BD%A6%E8%BE%86%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E8%BF%9D%E7%AB%A0%E7%BC%B4%E8%B4%B9%E7%9A%84%E8%BD%A6%E7%AE%A1%E5%AE%B6/id1041272088?mt=8" class="btn btn-primary">iPhone版下载</a>
                 </div>
             </div>
         </div>
     </section>
-</div>
-
-<!--作品-->
-<div class="zuopin">
-    <div class="APP">
-        <div class="app"></div>
-        <div class="apps container">
-            <div class="app_size">
-                <img src="../imgs/wuquxingicon.png" alt="武曲星">
-                <div class="wuquxing">
-                    <a href="https://itunes.apple.com/cn/app/%E6%AD%A6%E6%9B%B2%E6%98%9F-%E4%BF%9D%E9%99%A9%E4%BB%A3%E7%90%86%E4%BA%BA%E7%A7%BB%E5%8A%A8%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0/id949739473?mt=8" class="">武曲星</a>
+<!--HTML5-->
+    <section id="html5" class="padding80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 wow fadeInLeft">
+                    <h2>HTML5前端开发</h2>
+                    <p>一线资深前端开发工程师倾情打造！助你完成普通程序员到优秀工程师的华丽升级！</p>
+                    <p>
+                        <span class="glyphicon glyphicon-grain maizi-icon"></span>
+                         使用HTML5与CSS3技术轻松实现设备自适应展示。
+                    </p>
+                    <p>
+                        <span class="glyphicon glyphicon-grain maizi-icon"></span>
+                         清晰明了的语义代码结构，更高的可读性、更利于页面维护的。
+                    </p>
                 </div>
-            </div>
-            <div class="app_size">
-                <img src="../imgs/youbao.png" alt="">
-                <div class="wuquxing">
-                    <a href="https://itunes.apple.com/cn/app/%E6%9C%89%E5%AE%9D/id1034634211?mt=8">有宝</a>
-                </div>
-            </div>
-            <div class="app_size">
-                <img src="../imgs/baojiachexian.png" alt="">
-                <div class="wuquxing">
-                    <a href="https://itunes.apple.com/cn/app/%E4%BF%9D%E9%A9%BE%E8%BD%A6%E9%99%A9-%E8%BD%A6%E9%99%A9%E6%AF%94%E4%BB%B7%E8%B4%AD%E4%B9%B0-%E8%BD%A6%E9%99%A9%E5%AF%BC%E8%B4%AD-%E5%85%A8%E5%9B%BD%E8%BD%A6%E8%BE%86%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E5%85%BB%E8%BD%A6%E4%BF%9D%E5%85%BB/id988748315?mt=8">保驾车险</a>
-                </div>
-            </div>
-            <div class="app_size">
-                <img src="../imgs/baojiaweizhang.png" alt="">
-                <div class="wuquxing">
-                    <a href="https://itunes.apple.com/cn/app/%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E4%BF%9D%E9%A9%BE%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A22016%E4%B8%93%E4%B8%9A%E7%89%88-%E5%85%8D%E8%B4%B9%E6%94%AF%E6%8C%81%E5%85%A8%E5%9B%BD%E8%BD%A6%E8%BE%86%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2-%E8%BF%9D%E7%AB%A0%E7%BC%B4%E8%B4%B9%E7%9A%84%E8%BD%A6%E7%AE%A1%E5%AE%B6/id1041272088?mt=8">保驾违章查询</a>
+                <div class="col-lg-6 wow fadeInRight">
+                    <img src="img/html5.jpg" class="img-responsive" alt="">
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+<!--bootstrap-->
+    <section id="bootstrap" class="padding80">
+        <div class="container">
+            <div class="row wow fadeInU">
+                <div class="col-md-5">
+                    <img src="img/Bootstrap.jpg" alt="" class="img-responsive">
+                </div>
+                <div class="col-md-5">
+                    <h2>bootstrap实战视频教程</h2>
+                    <p>Bootstrap 是最受欢迎的 HTML、CSS 和 JS 框架，用于开发响应式布局、移动设备优先的 WEB 项目。</p>
+                    <p>
+                        <span class="glyphicon glyphicon-grain maizi-icon"></span>
+                        你的网站和应用能在 Bootstrap 的帮助下通过同一份代码快速、有效适配手机、平板、PC 设备。
+                    </p>
+                    <p>
+                        <span class="glyphicon glyphicon-grain maizi-icon"></span>
+                        Bootstrap 提供了全面、美观的文档。你能在这里找到关于 HTML 元素、HTML 和 CSS 组件、jQuery 插件方面的所有详细文档。
+                    </p>
+                </div>
+                <div class="col-md-5">
+
+                </div>
+            </di>
+        </div>
+    </section>
+<!--course-->
+    <section id="course" class="padding80">
+        <div class="container">
+            <div class="row wow fadeIn">
+                <div class="col-md-12">
+                    <h2>最新课程</h2>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course">
+                        <img src="img/swift.jpg" class="img-responsive">
+                        <a href="#" target="_blank" class="btn btn-primary" role="button">加入课程</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+<!--app-->
+    <section id="app" class="padding80">
+        <div class="container">
+            <div class="row wow fadeInUp">
+                <div class="col-md-6">
+                    <h2>麦子学院移动app</h2>
+                    <p>全新UI交互，与新网站数据同步，更加丰富的课程， 开启精彩无限，语音搜索课程，喊出你想要的课程， 一件收藏，方便自己重复学习，离线下载课程，在哪儿都能开！</p>
+                    <a href="#" class="btn btn-primary">iPhone版</a>
+                    <a href="#" class="btn btn-default">Android版</a>
+                </div>
+                <div class="col-md-6">
+                    <img src="img/app-banner.jpg" class="img-responsive">
+                </div>
+            </div>
+        </div>
+    </section>
+<!--contact-->
+    <section id="contact">
+        <div class="filter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 wow fadeInLeft">
+                        <h2>
+                            <span class="glyphicon glyphicon-send"></span>联系小麦
+                        </h2>
+                        <p>
+                            麦子学院是成都麦子信息技术有限公司旗下一个IT在线教育平台，
+                            目前已有30万注册用户，10万以上APP下载量，5000小时视频内容。
+                            我们从不说空话，专注于IT在线教育，脱离传统教育的束缚，
+                            让你走哪学哪，想学就学。逗比的老师，贴心的助教，
+                            在这儿你能感受到来自五 湖四海伙伴们热情和踏实的学习态度！
+                        </p>
+                        <p>
+                            <span class="glyphicon glyphicon-home"></span>
+                            地址:成都市高新区天府软件园D5-11
+                        </p>
+                        <p>
+                            <span class="glyphicon glyphicon-phone-alt"></span>
+                            联系电话：028-86567913
+                        </p>
+                        <p>
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            邮箱:hr@maiziedu.com
+                        </p>
+                    </div>
+                    <div class="col-md-5 wow fadeInRight">
+                        <form action="#" method="post">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="您的姓名">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="您的邮箱">
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" placeholder="标题">
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="from-control" placeholder="留言内容" rows="4"></textarea>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="submit" class="form-control" value="提交">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="lib/jQuery/jquery.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="lib/bootstrap/js/bootstrap.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/wow.min.js"></script>
-<sciprt src = "js/index/js"></sciprt>
+<!--<script src="js/jquery.singlePageNav.min.js"></script>-->
+<script src="js/index.js"></script>
+<script>
+    $(function () {
+        new WOW().init();
+    })
+</script>
 </body>
 </html>
