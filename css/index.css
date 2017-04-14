@@ -27,15 +27,19 @@ em,i {
     -moz-transition:all 0.5s linear;
     transition: all 0.5s linear;
 }
+.navbar-fixed-page .pc-navbar-header .navbar-nav a:link {
+    background: transparent;
+}
+.navbar-fixed-page .pc-navbar-header .navbar-nav a:visited {
+    background: transparent;
+}
 .navbar-fixed-page .pc-navbar-header .navbar-nav a:hover {
     background:#40D2B1;
 }
 .navbar-fixed-page .pc-navbar-header .navbar-nav a:active {
     background: none;
 }
-.navbar-fixed-page .pc-navbar-header .navbar-nav a:focus {
-    background:#40D2B1;
-}
+
 #page1 {
     background: url(../img/index-header-banner.jpg) no-repeat center;
     -moz-background-size:cover;
