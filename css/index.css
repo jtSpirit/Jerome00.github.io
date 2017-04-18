@@ -14,7 +14,7 @@ em,i {
     width: 100%;
 }
 .navbar-fixed-page .pc-navbar-header .navbar-nav li {
-    width:20%;
+    width:25%;
     text-align:center
 }
 .navbar-fixed-page .pc-navbar-header .navbar-nav li a{
@@ -139,6 +139,15 @@ em,i {
     font-weight: bold;
     text-align: center;
 }
+#blog article {
+    margin: 1em 0 0 0;
+}
+#blog article a {
+    font-size: 1.2em;
+    line-height: 1.4em;
+    text-decoration: none;
+    font-weight: bold;
+}
 #blog .time {
     font-size: 1em;
     color: #cccccc;
@@ -154,6 +163,16 @@ em,i {
     font-size: 1.5em;
     line-height: 1.5em;
     text-align: center;
+}
+#blog a {
+    text-decoration: none;
+    color: #000;
+}
+#blog a:hover {
+    color: #5CACEE;
+}
+#blog a:active {
+    color: #5CACEE;
 }
 #iOS {
     padding-top: 2em;
