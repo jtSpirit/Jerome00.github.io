@@ -45,6 +45,7 @@ em,i {
     -moz-background-size:cover;
     -o-background-size:cover;
     background-size:cover;
+    /*height: 800px;*/
 }
 #page1 .main {
     width:100%;
