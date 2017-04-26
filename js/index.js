@@ -7,5 +7,5 @@
 		$("html,body").animate({scrollTop:$(this.hash).offset().top},1000);
 	});
 	var b = document.documentElement.clientHeight;
-	$("#page1").css("height",b);
+	// $("#page1").css("height",b);
 }();

@@ -14,7 +14,7 @@ em,i {
     width: 100%;
 }
 .navbar-fixed-page .pc-navbar-header .navbar-nav li {
-    width:25%;
+    width:20%;
     text-align:center
 }
 .navbar-fixed-page .pc-navbar-header .navbar-nav li a{
@@ -197,6 +197,20 @@ em,i {
     padding-top: 2em;
     line-height: 40px;
 }
+#jianli {
+    padding: 10px;
+}
+#jianli .title {
+    font-size: 3em;
+    color: #8c8c8c;
+    font-weight: bold;
+    text-align: center;
+
+}
+#jianli .company .glyphicon {
+    padding-right: 20px;
+}
+
 #contact {
     background:url(../img/home-bg.jpg);
     background-size: cover;
