@@ -8,4 +8,14 @@
 	});
 	var b = document.documentElement.clientHeight;
 	// $("#page1").css("height",b);
+
+	// var leader = 0 , target = 0;
+	// $(".scroll").click(function () {
+	// 	a.preventDefault();
+	//
+	// });
+	// setInterval(function () {
+	// 	leader = leader + (target - leader)/10;
+	//
+	// },30);
 }();
